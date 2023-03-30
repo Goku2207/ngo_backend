@@ -42,9 +42,9 @@ const addItem = async (req) => {
             category : req.body.category,
             name : req.body.name,
             url : response.fileLocation,
-            status : req.body.status,
+            status : req.body.status,   
             region : req.body.region,
-        })
+        })  
         
         await item.save();
         return { status: 200, message: "Item Added!"};

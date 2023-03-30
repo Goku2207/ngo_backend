@@ -1,10 +1,10 @@
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage({
-    projectId: "social-media-mern-a00d2",
-    keyFilename: "./social-media-mern-a00d2-firebase-adminsdk-g7lj9-beb8090cf8.json",
+    projectId: "ABCD-mern-a00d2",
+    keyFilename: "./ABCD-mern-a00d2-firebase.json",
 });
-const bucket = storage.bucket("gs://social-media-mern-a00d2.appspot.com");
+const bucket = storage.bucket("gs://ABCD-mern-a00d2.appspot.com");
 
 const upload = (req) => {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ const upload = (req) => {
 
 const del = async (url) => {
     const fileName = url
-                        .replace('https://firebasestorage.googleapis.com/v0/b/social-media-mern-a00d2.appspot.com/o/','')
+                        .replace('https://firebasestorage.googleapis.com/v0/b/ABCD-mern-a00d2.appspot.com/o/','')
                         .replace('?alt=media','');
                         
     const file = bucket.file(fileName);
