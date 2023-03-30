@@ -13,4 +13,9 @@ router.post("/get", async (req,res) => {
     res.status(response.status).send(response);
 });
 
+router.post("/add", async (req,res) => {
+    const response =await functions.addItem(req);
+    res.status(response.status).send(response);
+});
+
 module.exports = router;
