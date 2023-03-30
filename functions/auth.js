@@ -83,34 +83,34 @@ const register = async (req, res) => {
             setCookies(res, accessToken, refreshToken);
             return { status: 200, message: 'Collector Registered', email: newCollector.email }
         }
-        else{
-            const user = await acceptors.findOne({ email: req.body.email });
-            if (user) {
-                return { status: 400, message: 'Email already registered' }
-            }
-            const aadhar = await acceptors.findOne({ aadhar: req.body.aadhar });
-            if(aadhar) {
-                return { status: 400, message: 'Aadhar already registered with different Email-id' }
-            }
-            const password = await bcrypt.hash(req.body.password, 10);
+        // else{
+        //     const user = await acceptors.findOne({ email: req.body.email });
+        //     if (user) {
+        //         return { status: 400, message: 'Email already registered' }
+        //     }
+        //     const aadhar = await acceptors.findOne({ aadhar: req.body.aadhar });
+        //     if(aadhar) {
+        //         return { status: 400, message: 'Aadhar already registered with different Email-id' }
+        //     }
+        //     const password = await bcrypt.hash(req.body.password, 10);
 
-            const newAcceptor = new acceptors({
-                email: req.body.email,
-                password: password,
-                aadhar: req.body.aadhar,
-                name: req.body.name,
-                mobile: req.body.mobile,
-            });
-            console.log('New Acceptor');
-            await newAcceptor.save();
+        //     const newAcceptor = new acceptors({
+        //         email: req.body.email,
+        //         password: password,
+        //         aadhar: req.body.aadhar,
+        //         name: req.body.name,
+        //         mobile: req.body.mobile,
+        //     });
+        //     console.log('New Acceptor');
+        //     await newAcceptor.save();
             
-            console.log('New Acceptor Saved!');
-            const {  accessToken, refreshToken } = generateToken(newAcceptor['_id']);
-            newAcceptor.refreshToken = refreshToken;
-            await newAcceptor.save();
-            setCookies(res, accessToken, refreshToken);
-            return { status: 200, message: 'Acceptor Registered', email: newAcceptor.email }
-        }
+        //     console.log('New Acceptor Saved!');
+        //     const {  accessToken, refreshToken } = generateToken(newAcceptor['_id']);
+        //     newAcceptor.refreshToken = refreshToken;
+        //     await newAcceptor.save();
+        //     setCookies(res, accessToken, refreshToken);
+        //     return { status: 200, message: 'Acceptor Registered', email: newAcceptor.email }
+        // }
     }
     catch(err) {
         console.log(err);
@@ -130,9 +130,9 @@ const login = async (req, res) => {
         else if(category==1){
             user = await collector.findOne({ "email": req.body.email });
         }
-        else{
-            user = await acceptors.findOne({ "email": req.body.email });
-        }
+        // else{
+        //     user = await acceptors.findOne({ "email": req.body.email });
+        // }
         
         if (!user) {
             return { status: 404, message: 'Email not found' };
@@ -168,9 +168,9 @@ const refresh = async (req, res) => {
         else if(category==1){
             user = await collector.findOne({ "email": req.body.email });
         }
-        else{
-            user = await acceptors.findOne({ "email": req.body.email });
-        }
+        // else{
+        //     user = await acceptors.findOne({ "email": req.body.email });
+        // }
 
         if (!user) {
             return { status: 401 }

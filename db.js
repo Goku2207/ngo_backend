@@ -41,9 +41,7 @@ const acceptorSchema = {
     name : String,
     aadhar : String, 
     mobile: String, //added
-    email: String,  //added
-    password : String, //added
-    refreshToken: String,  //added 
+    address: String,    //added
     items : [ mongoose.Types.ObjectId ]
 };
 
