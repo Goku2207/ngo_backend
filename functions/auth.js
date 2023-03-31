@@ -128,7 +128,7 @@ const login = async (req, res) => {
             user = await donators.findOne({ "email": req.body.email });
         }
         else if(category==1){
-            user = await collector.findOne({ "email": req.body.email });
+            user = await collectors.findOne({ "email": req.body.email });
         }
         // else{
         //     user = await acceptors.findOne({ "email": req.body.email });

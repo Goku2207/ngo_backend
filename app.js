@@ -1,8 +1,6 @@
 const express = require("express");
 const fs = require("fs");
 const dotenv = require("dotenv");
-// const authFunctions = require('./functions/auth');
-// const itemsFunctions = require("./functions/items");
 const routes = require("./routes");
 
 dotenv.config();

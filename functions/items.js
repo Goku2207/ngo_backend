@@ -45,7 +45,9 @@ const addItem = async (req) => {
             status : req.body.status,   
             region : req.body.region,
         })  
-        
+        //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
+        //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
+        //should there be a limit on donating only one item with a certain name or certain category?
         await item.save();
         return { status: 200, message: "Item Added!"};
     }
