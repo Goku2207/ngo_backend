@@ -53,14 +53,24 @@ const itemSchema = {
     region : String,
 };
 
+const requestSchema = {     //added
+    name : String,
+    aadhar : String,
+    mobile: String,
+    email: String,
+    password : String,
+};
+
 const Donators = mongoose.model("Donator", donatorSchema);
 const Collectors = mongoose.model("Collector", collectorSchema);
 const Acceptors = mongoose.model("Acceptor", acceptorSchema);
 const Items = mongoose.model("Item", itemSchema);
+const Requests = mongoose.model("Request", requestSchema);  //added
 
 module.exports = {
     Donators,
     Collectors,
     Acceptors,
-    Items
+    Items,
+    Requests
 }

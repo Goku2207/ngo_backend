@@ -16,6 +16,7 @@ app.use(cors({
 
 app.use("/auth", routes.auth);
 app.use("/items",routes.items);
+app.use("/admin",routes.admin);
 
 //  /admin/register
 //  /admin/requests

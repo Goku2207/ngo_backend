@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { Donators: donators, Collectors: collectors, Acceptors: acceptors } = require("../db");
+const { Donators: donators, Collectors: collectors, Acceptors: acceptors, Requests: requests } = require("../db");
 const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 
@@ -66,23 +66,47 @@ const register = async (req, res) => {
             }
             const password = await bcrypt.hash(req.body.password, 10);
 
-            const newCollector = new collectors({
-                email: req.body.email,
-                password: password,
-                aadhar: req.body.aadhar,
-                name: req.body.name,
+            // Collector to be approved by the admin
+            const userInRequest = await requests.findOne({email: req.body.email});
+            if (userInRequest) {
+                return { status: 400, message: 'Registeration request already sent!' }
+            }
+            const aadharInRequest = await requests.findOne({ aadhar: req.body.aadhar });
+            if(aadharInRequest) {
+                return { status: 400, message: 'Registeration request already sent!' }
+            }
+            const newRequest = new requests({
+                name : req.body.name,
+                aadhar : req.body.aadhar,
                 mobile: req.body.mobile,
+                email: req.body.email,
+                password : password
             });
-            console.log('New Collector');
-            await newCollector.save();
+            console.log('New Request for Collector');
+            await newRequest.save();
+            console.log('New Request saved');
+            return { status: 200, message: 'Request for being Collector Submitted Successfully!' };
+
+            // If Collector can be madde directly without approval of admin
+            // const newCollector = new collectors({
+            //     email: req.body.email,
+            //     password: password,
+            //     aadhar: req.body.aadhar,
+            //     name: req.body.name,
+            //     mobile: req.body.mobile,
+            // });
+            // console.log('New Collector');
+            // await newCollector.save();
             
-            console.log('New Collector Saved!');
-            const {  accessToken, refreshToken } = generateToken(newCollector['_id']);
-            newCollector.refreshToken = refreshToken;
-            await newCollector.save();
-            setCookies(res, accessToken, refreshToken);
-            return { status: 200, message: 'Collector Registered', email: newCollector.email }
+            // console.log('New Collector Saved!');
+            // const {  accessToken, refreshToken } = generateToken(newCollector['_id']);
+            // newCollector.refreshToken = refreshToken;
+            // await newCollector.save();
+            // setCookies(res, accessToken, refreshToken);
+            // return { status: 200, message: 'Collector Registered', email: newCollector.email }
         }
+
+        // Registration for Acceptor
         // else{
         //     const user = await acceptors.findOne({ email: req.body.email });
         //     if (user) {
@@ -208,4 +232,6 @@ module.exports = {
     login,
     refresh,
     verify,
+    generateToken,
+    setCookies,
 }
