@@ -1,10 +1,10 @@
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage({
-    projectId: "ABCD-mern-a00d2",
-    keyFilename: "./ABCD-mern-a00d2-firebase.json",
+    projectId: "ngotest-ddb96",
+    keyFilename: "./ngotest-ddb96-firebase-adminsdk-h1dgb-4595e0fec9.json",
 });
-const bucket = storage.bucket("gs://ABCD-mern-a00d2.appspot.com");
+const bucket = storage.bucket("gs://ngotest-ddb96.appspot.com");
 
 const upload = (req) => {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ const upload = (req) => {
 
 const del = async (url) => {
     const fileName = url
-                        .replace('https://firebasestorage.googleapis.com/v0/b/ABCD-mern-a00d2.appspot.com/o/','')
+                        .replace('https://firebasestorage.googleapis.com/v0/b/ngotest-ddb96.appspot.com/o/','')
                         .replace('?alt=media','');
                         
     const file = bucket.file(fileName);

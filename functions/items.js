@@ -37,7 +37,9 @@ const getItem = async (data) => {
 
 const addItem = async (req) => {
     try{
+        console.log("upload...");
         const response = await upload(req);
+        console.log("done");
         const item = new items({
             category : req.body.category,
             name : req.body.name,
