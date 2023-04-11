@@ -17,10 +17,9 @@ app.use(cors({
 app.use("/auth", routes.auth);
 app.use("/items",routes.items);
 app.use("/admin",routes.admin);
+app.use("/collector",routes.collector);
 
 //  /admin/register
-//  /admin/requests
-//  /admin/approval
 
 app.get('/', (req, res) => {
     res.send('working')

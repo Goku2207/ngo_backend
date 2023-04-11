@@ -44,6 +44,7 @@ const register = async (req, res) => {
                 aadhar: req.body.aadhar,
                 name: req.body.name,
                 mobile: req.body.mobile,
+                items: [],
             });
             console.log('New Donator');
             await newDonator.save();

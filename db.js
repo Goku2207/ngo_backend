@@ -48,9 +48,11 @@ const acceptorSchema = {
 const itemSchema = {
     category : String,
     name : String,
-    url : String,
+    url : [String],
     status : String,
     region : String,
+    collId : mongoose.Types.ObjectId,
+    charges: Integer,
 };
 
 const requestSchema = {     //added

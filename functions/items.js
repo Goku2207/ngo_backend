@@ -43,9 +43,11 @@ const addItem = async (req) => {
         const item = new items({
             category : req.body.category,
             name : req.body.name,
-            url : response.fileLocation,
-            status : req.body.status,   
+            url : [response.fileLocation],
+            status : 'Unassigned',   
             region : req.body.region,
+            charges : 0,
+            collID : null,
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
