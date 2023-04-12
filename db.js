@@ -52,6 +52,7 @@ const itemSchema = {
     status : String,
     region : String,
     collId : mongoose.Types.ObjectId,
+    donId : mongoose.Types.ObjectId,
     charges: String,
 };
 

@@ -1,7 +1,7 @@
 const {Items: items, Collectors: collectors, Acceptors: acceptors } = require("../db");
 const mongoose = require("mongoose");
 const { upload } = require("./helper");
-const ObjectId = mongoose.Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId;
 
 const getCollectors = async (data) => {
     try{

@@ -1,4 +1,6 @@
 const { Donators: donators } = require("../db");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 //TO GET THE TOP THREE DONATORS
 const getTopThree = async () => {
@@ -18,6 +20,21 @@ const getTopThree = async () => {
     }
 }
 
+//TO GET THE ITEMS DONATED BY THE DONATOR
+const donatedItems = async (data) =>{   //donatorID
+    try{
+        console.log(data);
+        const id = new ObjectId(data.donatorID);
+        const donatedItems = await items.find({donId: id});
+        return { status: 200, donatedItems};
+     }
+     catch(err){
+         console.log(err);
+         return { status: 500, message: 'Internal Server Error' };
+     }
+}
+
 module.exports = {
     getTopThree,
+    donatedItems,
 }
