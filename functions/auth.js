@@ -170,7 +170,7 @@ const login = async (req, res) => {
         user.refreshToken = refreshToken;
         await user.save();
         setCookies(res, accessToken, refreshToken);
-        return { status: 200, message: 'User Logged in', email: user.email };
+        return { status: 200, message: 'User Logged in', user };
     }
     catch(err){
         return { status: 500, message: 'Internal server error' }

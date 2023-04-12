@@ -3,11 +3,63 @@ const mongoose = require("mongoose");
 const { upload } = require("./helper");
 const ObjectId = mongoose.Types.ObjectId
 
+const getCollectors = async (data) => {
+    try{
+        console.log(data);
+        // const {page, limit} = data;
+        // const products = await collectors.aggregate([
+        //     { $skip: (page-1)*limit },
+        //     { $limit: limit }
+        // ])
+        const allCollectors = await collectors.find();
+        return { status: 200, allCollectors};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
+const getCollector = async (data) => {  //collectorID
+    try{
+        console.log(data);
+        const id = new ObjectId(data.collectorID);
+        const collector = await collectors.findOne({ _id: id});
+        if(!collector){
+            return {status: 404};
+        }
+        return {status: 200, collector};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
+const editProfile = async (data) => {   //collectorID, mobile, email
+    try{
+        const id = new ObjectId(data.collectorID);
+        const collector = await collectors.findOne({_id: id});
+        if(!collector)
+            return { status: 404, message: 'Something went wrong!'};
+        if(data.mobile!="")
+            collector.mobile = data.mobile;
+        if(data.email!="")
+            collector.email = data.email;
+        await collector.save();
+        return { status: 200, message: 'Profile Updated'};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
 const getAssignedItems = async (data) =>{ //collectorID
     try{
         console.log(data);
         const id = new ObjectId(data.collectorID);
-        const assignedItems = await items.find({_id: id});
+        const assignedItems = await items.find({collId: id});
         return { status: 200, assignedItems};
      }
      catch(err){
@@ -28,7 +80,7 @@ const collectItem = async (req) => {   //itemID, file
             return { status: 404, message: 'Something went wrong!'};
         item.url.push(response.fileLocation);
         item.status = 'Picked up';
-        item.save();
+        await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
      catch(err){
@@ -50,7 +102,7 @@ const updateItem = async (req) =>{  //itemID, file, charges
         item.url.push(response.fileLocation);
         item.status = 'Mended';
         item.charges = req.body.charges;
-        item.save();
+        await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
      catch(err){
@@ -63,10 +115,12 @@ const deliverItem = async (data) => {   //itemID, name, aadhar, mobile, address
     try{
         console.log(data);
         const id = new ObjectId(data.itemID);
-        const item = items.findOne({_id: id});
+        const item = await items.findOne({_id: id});
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
-        const acceptor = await acceptors.findOne({aadhar: data.aadhar});
+        if(item.status == 'Delivered')
+            return { status: 400, message: 'Item already Donated'};
+        var acceptor = await acceptors.findOne({aadhar: data.aadhar});
         if(!acceptor){
             acceptor = new acceptors({
                 name : data.name,
@@ -77,9 +131,9 @@ const deliverItem = async (data) => {   //itemID, name, aadhar, mobile, address
             });
         }
         acceptor.items.push(id);
-        acceptor.save();
+        await acceptor.save();
         item.status = 'Delivered';
-        item.save();
+        await item.save();
         return { status: 200, message: 'Item Delivered'};
      }
      catch(err){
@@ -94,4 +148,7 @@ module.exports = {
     collectItem,
     updateItem,
     deliverItem,
+    getCollector,
+    getCollectors,
+    editProfile,
 }

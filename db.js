@@ -52,7 +52,7 @@ const itemSchema = {
     status : String,
     region : String,
     collId : mongoose.Types.ObjectId,
-    charges: Integer,
+    charges: String,
 };
 
 const requestSchema = {     //added

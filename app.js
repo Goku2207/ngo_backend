@@ -18,8 +18,7 @@ app.use("/auth", routes.auth);
 app.use("/items",routes.items);
 app.use("/admin",routes.admin);
 app.use("/collector",routes.collector);
-
-//  /admin/register
+app.use("/donator",routes.donator);
 
 app.get('/', (req, res) => {
     res.send('working')
