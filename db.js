@@ -63,6 +63,7 @@ const requestSchema = {     //added
     mobile: String,
     email: String,
     password : String,
+    region : String,
 };
 
 const Donators = mongoose.model("Donator", donatorSchema);

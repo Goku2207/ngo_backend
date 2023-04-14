@@ -1,4 +1,5 @@
 const { Storage } = require('@google-cloud/storage');
+const { Collectors: collectors, Items: items } = require('../db');
 
 const storage = new Storage({
     projectId: "ngotest-ddb96",
@@ -36,7 +37,21 @@ const del = async (url) => {
     return await file.delete();
 }
 
+const autoAssign = async (regionToAssign) => {
+    const collector = await collectors.findOne({region: regionToAssign});
+    if(!collector)
+        return null;
+    (await items.find({region: regionToAssign})).forEach((item)=>{
+        collector.items.push(item._id);
+        item.collID = collector._id;
+        item.status = 'Assigned';
+        item.save();
+    });
+    collector.save();
+}
+
 module.exports = {
     upload,
-    del
+    del,
+    autoAssign,
 }

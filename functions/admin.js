@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const {generateToken, setCookies} = require("./auth");
+const {autoAssign} = require("./helper");
 const ObjectId = mongoose.Types.ObjectId;
 
 const getRequests = async (data) => {
@@ -21,7 +22,7 @@ const getRequests = async (data) => {
     }
 }
 
-const approve = async(req,res) => {
+const approve = async(req,res) => { // _id, approval
     try{
         //console.log(req.body);
         const data = req.body;
@@ -37,6 +38,8 @@ const approve = async(req,res) => {
                     aadhar: user.aadhar,
                     name: user.name,
                     mobile: user.mobile,
+                    region: user.region,
+                    items: []
                 });            
             console.log('New Collector');
             await newCollector.save();
@@ -48,7 +51,7 @@ const approve = async(req,res) => {
 
             //Deleting the Request
             await requests.deleteOne({_id: id});
-
+            await autoAssign(user.region);
             return { status: 200, message: 'Collector Request Accepted', email: newCollector.email };
         }
         else{

@@ -81,7 +81,8 @@ const register = async (req, res) => {
                 aadhar : req.body.aadhar,
                 mobile: req.body.mobile,
                 email: req.body.email,
-                password : password
+                password : password,
+                region : req.body.region
             });
             console.log('New Request for Collector');
             await newRequest.save();
