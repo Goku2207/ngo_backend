@@ -11,10 +11,10 @@ mongoose.connect( process.env.DB_URL, {
 });
 
 //Schema
-const admin = {
+const adminSchema = {
     name: String,
     password: String,
-    key: String,
+    //key: String,
 } //ask if multiple admins possible and if not, what should be admin id and pswd
 
 const donatorSchema = {
@@ -33,6 +33,7 @@ const collectorSchema = {
     mobile: String,
     email: String,  //added
     password : String,
+    region : String,
     refreshToken: String,   //added
     items : [ mongoose.Types.ObjectId ]
 };//contact should be shared with donor?
@@ -69,11 +70,13 @@ const Collectors = mongoose.model("Collector", collectorSchema);
 const Acceptors = mongoose.model("Acceptor", acceptorSchema);
 const Items = mongoose.model("Item", itemSchema);
 const Requests = mongoose.model("Request", requestSchema);  //added
+const Admins = mongoose.model("Admin",adminSchema);
 
 module.exports = {
     Donators,
     Collectors,
     Acceptors,
     Items,
-    Requests
+    Requests,
+    Admins
 }

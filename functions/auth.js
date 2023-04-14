@@ -30,11 +30,11 @@ const register = async (req, res) => {
         if(category==0){
             const user = await donators.findOne({ email: req.body.email });
             if (user) {
-                return { status: 400, message: 'Email already registered' }
+                return { status: 400, message: 'Email already registered' };
             }
             const aadhar = await donators.findOne({ aadhar: req.body.aadhar });
             if(aadhar) {
-                return { status: 400, message: 'Aadhar already registered with different Email-id' }
+                return { status: 400, message: 'Aadhar already registered with different Email-id' };
             }
             const password = await bcrypt.hash(req.body.password, 10);
 
@@ -54,27 +54,27 @@ const register = async (req, res) => {
             newDonator.refreshToken = refreshToken;
             await newDonator.save();
             setCookies(res, accessToken, refreshToken);
-            return { status: 200, message: 'Donator Registered', email: newDonator.email }
+            return { status: 200, message: 'Donator Registered', email: newDonator.email };
         }
         else if(category==1){
             const user = await collectors.findOne({ email: req.body.email });
             if (user) {
-                return { status: 400, message: 'Email already registered' }
+                return { status: 400, message: 'Email already registered' };
             }
             const aadhar = await collectors.findOne({ aadhar: req.body.aadhar });
             if(aadhar) {
-                return { status: 400, message: 'Aadhar already registered with different Email-id' }
+                return { status: 400, message: 'Aadhar already registered with different Email-id' };
             }
             const password = await bcrypt.hash(req.body.password, 10);
 
             // Collector to be approved by the admin
             const userInRequest = await requests.findOne({email: req.body.email});
             if (userInRequest) {
-                return { status: 400, message: 'Registeration request already sent!' }
+                return { status: 400, message: 'Registeration request already sent!' };
             }
             const aadharInRequest = await requests.findOne({ aadhar: req.body.aadhar });
             if(aadharInRequest) {
-                return { status: 400, message: 'Registeration request already sent!' }
+                return { status: 400, message: 'Registeration request already sent!' };
             }
             const newRequest = new requests({
                 name : req.body.name,
@@ -139,7 +139,7 @@ const register = async (req, res) => {
     }
     catch(err) {
         console.log(err);
-        return { status: 500, message: 'Internal Server Error' }
+        return { status: 500, message: 'Internal Server Error' };
     }
 }
 
@@ -173,7 +173,7 @@ const login = async (req, res) => {
         return { status: 200, message: 'User Logged in', user };
     }
     catch(err){
-        return { status: 500, message: 'Internal server error' }
+        return { status: 500, message: 'Internal server error' };
     }
 }
 
@@ -181,7 +181,7 @@ const refresh = async (req, res) => {
     try{
         let refreshToken = req.cookies['refresh-token'];
         if (!refreshToken) {
-            return { status: 401 }
+            return { status: 401 };
         }
 
         // Donor - category 0, Collector - category 1, Acceptor - category 2
@@ -198,13 +198,13 @@ const refresh = async (req, res) => {
         // }
 
         if (!user) {
-            return { status: 401 }
+            return { status: 401 };
         }
         try{
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         }
         catch(err){
-            return { status: 403 }
+            return { status: 403 };
         }
         const {  accessToken, refreshToken: newRefreshToken } = generateToken(user['_id']);
         user.refreshToken = newRefreshToken;
@@ -213,7 +213,7 @@ const refresh = async (req, res) => {
         return { status: 200 };
     }
     catch (err) {
-        return { status: 500 }
+        return { status: 500 };
     }
 }
 

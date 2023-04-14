@@ -1,4 +1,4 @@
-const {Items: items, Donators: donators } = require("../db");
+const {Items: items, Donators: donators, Collectors: collectors } = require("../db");
 const { upload } = require('./helper'); 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -48,11 +48,13 @@ const addItem = async (req) => {
             region : req.body.region,
             charges : 0,
             collID : null,
+            donID : null,
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
         //should there be a limit on donating only one item with a certain name or certain category?
         await item.save();
+        
         return { status: 200, message: "Item Added!"};
     }
     catch(err){
