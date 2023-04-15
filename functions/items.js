@@ -1,5 +1,5 @@
 const {Items: items, Donators: donators, Collectors: collectors } = require("../db");
-const { upload } = require('./helper'); 
+const { upload, findLeastAssignedCollector } = require('./helper'); 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -54,8 +54,9 @@ const addItem = async (req) => {
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
         //should there be a limit on donating only one item with a certain name or certain category?
         await item.save();
-        const collector = await collectors.findOne({region: item.region});
-        if(collector){
+        const id = await findLeastAssignedCollector(item.region);
+        if(id){
+            const collector = await collectors.find({_id: id});
             item.collID = collector._id;
             await item.save();
             collector.items.push(item._id);

@@ -1,5 +1,7 @@
 const { Storage } = require('@google-cloud/storage');
 const { Collectors: collectors, Items: items } = require('../db');
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const storage = new Storage({
     projectId: "ngotest-ddb96",
@@ -38,20 +40,44 @@ const del = async (url) => {
 }
 
 const autoAssign = async (regionToAssign) => {
-    const collector = await collectors.findOne({region: regionToAssign});
-    if(!collector)
-        return null;
-    (await items.find({region: regionToAssign})).forEach((item)=>{
-        collector.items.push(item._id);
-        item.collID = collector._id;
+    
+    (await items.find({region: regionToAssign, status: 'Unassigned'})).forEach(async (item)=>{
+        const id = await findLeastAssignedCollector(regionToAssign);
+        const collectorToAssign = await collectors.findOne({_id: id});
+        collectorToAssign.items.push(item._id);
+        await collectorToAssign.save();
+        item.collID = collectorToAssign._id;
         item.status = 'Assigned';
-        item.save();
+        await item.save();
     });
-    collector.save();
+    return { status: 200, message: 'Success'};
+}
+
+const findLeastAssignedCollector = async (regionToAssign) => {
+    var collectorArr = await collectors.find({region: regionToAssign});
+    if(!collectorArr)
+        return null;
+    var minAssigned = 1e9+7;
+    for(var i=0;i<collectorArr.length;i++){
+        minAssigned = Math.min(minAssigned,collectorArr[i].items.length);
+    }
+    //console.log(minAssigned);
+    var minCollectorArr = [];
+    for(var i=0;i<collectorArr.length;i++){
+        if(collectorArr[i].items.length == minAssigned){
+            minCollectorArr.push(collectorArr[i]);
+        }
+    }
+   // console.log(minCollectorArr);
+    var randomIndex = Math.floor(Math.random() * minCollectorArr.length);
+    //console.log(randomIndex);
+    //console.log(minCollectorArr[randomIndex]);
+    return new ObjectId(minCollectorArr[randomIndex]._id);
 }
 
 module.exports = {
     upload,
     del,
     autoAssign,
+    findLeastAssignedCollector,
 }
