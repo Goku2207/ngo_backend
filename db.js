@@ -52,6 +52,7 @@ const itemSchema = {
     url : [String],
     status : String,
     region : String,
+    address: String,
     collId : mongoose.Types.ObjectId,
     donId : mongoose.Types.ObjectId,
     charges: String,

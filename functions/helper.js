@@ -55,7 +55,8 @@ const autoAssign = async (regionToAssign) => {
 
 const findLeastAssignedCollector = async (regionToAssign) => {
     var collectorArr = await collectors.find({region: regionToAssign});
-    if(!collectorArr)
+    //console.log(collectorArr);
+    if(collectorArr.length==0)
         return null;
     var minAssigned = 1e9+7;
     for(var i=0;i<collectorArr.length;i++){

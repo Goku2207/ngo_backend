@@ -3,7 +3,7 @@ const { upload, findLeastAssignedCollector } = require('./helper');
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
-const getItems = async (data) => {
+const getItems = async (data) => {  //page, limit
     try{
         console.log(data);
         const {page, limit} = data;
@@ -19,7 +19,7 @@ const getItems = async (data) => {
     }
 }
 
-const getItem = async (data) => {
+const getItem = async (data) => {   //_id
     try{
         console.log(data);
         const id = new ObjectId(data);
@@ -35,11 +35,13 @@ const getItem = async (data) => {
     }
 }
 
-const addItem = async (req) => {
+const addItem = async (req) => {    // name, region, category, address, donID
     try{
         console.log("upload...");
         const response = await upload(req);
         console.log("done");
+        //console.log(req.body);
+        const donID = new ObjectId(req.body.donID);
         const item = new items({
             category : req.body.category,
             name : req.body.name,
@@ -47,13 +49,18 @@ const addItem = async (req) => {
             status : 'Unassigned',   
             region : req.body.region,
             charges : 0,
-            collID : null,
-            donID : req.body.donatorID,
+            collId : null,
+            donId : donID,
+            address : req.body.address,
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
         //should there be a limit on donating only one item with a certain name or certain category?
         await item.save();
+        const donator = await donators.findOne({_id: donID});
+        //console.log(donator);
+        donator.items.push(item._id);
+        await donator.save();
         const id = await findLeastAssignedCollector(item.region);
         if(id){
             const collector = await collectors.find({_id: id});

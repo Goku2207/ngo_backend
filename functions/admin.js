@@ -6,7 +6,7 @@ const {generateToken, setCookies} = require("./auth");
 const {autoAssign} = require("./helper");
 const ObjectId = mongoose.Types.ObjectId;
 
-const getRequests = async (data) => {
+const getRequests = async (data) => {   // page, limit
     try{
        // console.log(data);
         const {page, limit} = data;
@@ -67,7 +67,7 @@ const approve = async(req,res) => { // _id, approval
     }
 }
 
-const payOff = async(req) => {
+const payOff = async(req) => {  // _id, paid
     try{
         //console.log(req.body);
         const data=req.body;

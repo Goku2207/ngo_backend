@@ -72,14 +72,14 @@ const collectItem = async (req) => {   //itemID, file
     try{
         console.log(req.body);
         const id = new ObjectId(req.body.itemID);
-        const response = upload(req);
+        const response = await upload(req);
         if(response.fileLocation == "")
             return { status: 500, message: 'Internal Server Error' };
         const item = await items.findOne({_id: id});
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
         item.url.push(response.fileLocation);
-        item.status = 'Picked up';
+        item.status = 'Picked Up';
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
@@ -93,12 +93,13 @@ const updateItem = async (req) =>{  //itemID, file, charges
     try{
         console.log(req.body);
         const id = new ObjectId(req.body.itemID);
-        const response = upload(req);
+        const response = await upload(req);
         if(response.fileLocation == "")
             return { status: 500, message: 'Internal Server Error' };
         const item = await items.findOne({_id: id});
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
+        //console.log(response);
         item.url.push(response.fileLocation);
         item.status = 'Mended';
         item.charges = req.body.charges;

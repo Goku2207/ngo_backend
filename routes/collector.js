@@ -44,7 +44,7 @@ router.post("/itemCollect",uploader.single('file'), async (req,res) => {
 
 //TO ADD IMAGE AND CHARGES OF MENDED ITEM
 router.post("/itemUpdate",uploader.single('file'), async (req,res) => {
-    //console.log(req.body.file);
+    console.log(req.body);
     const response =await functions.updateItem(req);
     res.status(response.status).send(response);
 });

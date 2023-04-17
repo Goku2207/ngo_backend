@@ -1,6 +1,39 @@
-const { Donators: donators } = require("../db");
+const { Donators: donators, Items: items } = require("../db");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+
+const getDonators = async (data) => {
+    try{
+        console.log(data);
+        // const {page, limit} = data;
+        // const products = await collectors.aggregate([
+        //     { $skip: (page-1)*limit },
+        //     { $limit: limit }
+        // ])
+        const allDonators = await donators.find();
+        return { status: 200, allDonators};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
+const getDonator = async (data) => {  //donatorID
+    try{
+        console.log(data);
+        const id = new ObjectId(data.donatorID);
+        const donator = await donators.findOne({ _id: id});
+        if(!donator){
+            return {status: 404};
+        }
+        return {status: 200, donator};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
 
 //TO GET THE TOP THREE DONATORS
 const getTopThree = async () => {
@@ -35,6 +68,8 @@ const donatedItems = async (data) =>{   //donatorID
 }
 
 module.exports = {
+    getDonators,
+    getDonator,
     getTopThree,
     donatedItems,
 }
