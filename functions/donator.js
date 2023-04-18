@@ -1,4 +1,4 @@
-const { Donators: donators, Items: items } = require("../db");
+const { Donators: donators, Items: items, Collectors: collectors } = require("../db");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -68,9 +68,38 @@ const donatedItems = async (data) =>{   //donatorID
      }
 }
 
+//TO GET THE SIZE OF DONATORS DB
+const getSize = async () => {
+    try{
+        const donatorSize = await donators.aggregate([
+            { $group: { _id: null, count: { $sum: 1 } } },
+            { $project: { _id: 0 } }
+         ]);
+         const collectorSize = await collectors.aggregate([
+            { $group: { _id: null, count: { $sum: 1 } } },
+            { $project: { _id: 0 } }
+         ]);
+         const itemSize = await items.aggregate([
+            { $group: { _id: null, count: { $sum: 1 } } },
+            { $project: { _id: 0 } }
+         ]);
+         const sizes = { donatorSize: donatorSize[0].count,
+                         collectorSize: collectorSize[0].count,
+                         itemSize: itemSize[0].count
+                    };
+         console.log(sizes);
+         return { status: 200, sizes};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
 module.exports = {
     getDonators,
     getDonator,
     getTopThree,
     donatedItems,
+    getSize,
 }

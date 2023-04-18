@@ -27,4 +27,10 @@ router.post('/items',  async (req, res) => {
     res.status(response.status).send(response);
 })
 
+//TO FETCH THE NUMBER OF DONATORS, COLLECTORS AND DONATIONS
+router.get('/size',  async (req, res) => {
+    const response = await functions.getSize();
+    res.status(response.status).send(response);
+})
+
 module.exports = router;
