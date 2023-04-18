@@ -55,6 +55,10 @@ const itemSchema = {
     address: String,
     collId : mongoose.Types.ObjectId,
     donId : mongoose.Types.ObjectId,
+    donorName: String,
+    donorContact: String,
+    collectorName: String,
+    collectorContact: String,
     charges: String,
 };
 

@@ -42,6 +42,7 @@ const addItem = async (req) => {    // name, region, category, address, donID
         console.log("done");
         //console.log(req.body);
         const donID = new ObjectId(req.body.donID);
+        const donator = await donators.findOne({_id: donID});
         const item = new items({
             category : req.body.category,
             name : req.body.name,
@@ -52,19 +53,28 @@ const addItem = async (req) => {    // name, region, category, address, donID
             collId : null,
             donId : donID,
             address : req.body.address,
+            donorName: donator.name,
+            donorContact: donator.mobile,
+            collectorName: "",
+            collectorContact: "",
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
         //should there be a limit on donating only one item with a certain name or certain category?
         await item.save();
-        const donator = await donators.findOne({_id: donID});
+        
         //console.log(donator);
         donator.items.push(item._id);
         await donator.save();
         const id = await findLeastAssignedCollector(item.region);
+        //console.log(id);
         if(id){
-            const collector = await collectors.find({_id: id});
-            item.collID = collector._id;
+            const collector = await collectors.findOne({_id: id});
+            //console.log(collector);
+            item.collId = collector._id;
+            item.status = 'Assigned';
+            item.collectorName = collector.name;
+            item.collectorContact = collector.mobile;
             await item.save();
             collector.items.push(item._id);
             await collector.save();

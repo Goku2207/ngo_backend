@@ -88,7 +88,7 @@ const payOff = async(req) => {  // _id, paid
     }
 }
 
-const adlogin = async (req,res) => {
+const adlogin = async (req,res) => {    //name, password
     console.log(req.body);
     //const password = await bcrypt.hash("IITISMNGO@123", 10);
     //console.log(password);
@@ -109,7 +109,7 @@ const adlogin = async (req,res) => {
           await user.save();
           setCookies(res, accessToken, refreshToken);
 
-          return { status: 200, message: 'Admin Logged in' };
+          return { status: 200, message: 'Admin Logged in', user };
 
         }
         else

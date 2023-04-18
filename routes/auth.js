@@ -3,7 +3,7 @@ const functions = require('../functions/auth');
 
 const router = express.Router();
 
-//To ADD COLLECTOR REQUEST
+//To ADD COLLECTOR REQUEST AND DONATOR REGISTER
 router.post("/register", async (req, res) => {
     const response = await functions.register(req, res);
     res.status(response.status).send(response);

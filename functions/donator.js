@@ -59,6 +59,7 @@ const donatedItems = async (data) =>{   //donatorID
         console.log(data);
         const id = new ObjectId(data.donatorID);
         const donatedItems = await items.find({donId: id});
+        console.log(donatedItems.length);
         return { status: 200, donatedItems};
      }
      catch(err){

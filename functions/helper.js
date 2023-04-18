@@ -46,8 +46,10 @@ const autoAssign = async (regionToAssign) => {
         const collectorToAssign = await collectors.findOne({_id: id});
         collectorToAssign.items.push(item._id);
         await collectorToAssign.save();
-        item.collID = collectorToAssign._id;
+        item.collId = collectorToAssign._id;
         item.status = 'Assigned';
+        item.collectorName = collectorToAssign.name;
+        item.collectorContact = collectorToAssign.mobile;
         await item.save();
     });
     return { status: 200, message: 'Success'};
