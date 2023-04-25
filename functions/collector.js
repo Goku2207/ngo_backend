@@ -143,6 +143,35 @@ const deliverItem = async (data) => {   //itemID, name, aadhar, mobile, address
      }
 }
 
+//TO DELETE A COLLECTOR
+const deleteCollector = async(data) => {    // collectorID
+    try{
+        console.log("Deleting Agent..");
+        console.log(data);
+        const id = new ObjectId(data.collectorID);
+        const collector = await collectors.findOne({ _id: id});
+        if(!collector){
+            return { status: 404, message: 'Agent already Deleted'};
+        }
+        (await items.find({ collId: id })).forEach(async (item)=>{
+            item.collId = null;
+            item.collectorName = "";
+            item.collectorContact = "";
+            if(item.status == 'Assigned'){
+                item.status = 'Unassigned';
+            }
+            await item.save();
+        });
+        await collectors.deleteOne({ _id: id});
+        console.log("Agent Deleted");
+        return { status: 200, message: 'Agent Removed Successfully!'};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: 'Internal Server Error' };
+    }
+}
+
 
 module.exports = {
     getAssignedItems,
@@ -152,4 +181,5 @@ module.exports = {
     getCollector,
     getCollectors,
     editProfile,
+    deleteCollector,
 }

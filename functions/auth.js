@@ -84,10 +84,10 @@ const register = async (req, res) => {
                 password : password,
                 region : req.body.region
             });
-            console.log('New Request for Collector');
+            console.log('New Request for Agent');
             await newRequest.save();
             console.log('New Request saved');
-            return { status: 200, message: 'Request for being Collector Submitted Successfully!' };
+            return { status: 200, message: 'Request for being Agent Submitted Successfully!' };
 
             // If Collector can be madde directly without approval of admin
             // const newCollector = new collectors({

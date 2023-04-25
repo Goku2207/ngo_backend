@@ -55,4 +55,10 @@ router.post('/itemDeliver',  async (req, res) => {
     res.status(response.status).send(response);
 });
 
+//TO DELETE A COLLECTOR USING COLLECTOR ID
+router.post("/delete", async (req,res) => {
+    const response =await functions.deleteCollector(req.body);
+    res.status(response.status).send(response);
+});
+
 module.exports = router;

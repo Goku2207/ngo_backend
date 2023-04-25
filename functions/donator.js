@@ -2,6 +2,7 @@ const { Donators: donators, Items: items, Collectors: collectors } = require("..
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
+//TO GET ALL THE DONATORS
 const getDonators = async (data) => {
     try{
         console.log(data);
@@ -19,6 +20,7 @@ const getDonators = async (data) => {
     }
 }
 
+//TO GET A SINGLE DONATOR
 const getDonator = async (data) => {  //donatorID
     try{
         console.log(data);
@@ -68,7 +70,7 @@ const donatedItems = async (data) =>{   //donatorID
      }
 }
 
-//TO GET THE SIZE OF DONATORS DB
+//TO GET THE SIZE OF DONATORS, COLLECTORS AND ITEMS DB
 const getSize = async () => {
     try{
         const donatorSize = await donators.aggregate([
