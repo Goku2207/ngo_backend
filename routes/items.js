@@ -30,4 +30,10 @@ router.post("/add",uploader.single('file'), async (req,res) => {
     res.status(response.status).send(response);
 });
 
+//ADD A PHOTO TO THE ITEM
+router.post("/addImage",uploader.single('file'), async (req,res) => {
+    //console.log(req.body.file);
+    const response =await functions.addImage(req);
+    res.status(response.status).send(response);
+});
 module.exports = router;

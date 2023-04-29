@@ -57,6 +57,7 @@ const addItem = async (req) => {    // name, region, category, address, donID
             donorContact: donator.mobile,
             collectorName: "",
             collectorContact: "",
+            mendingDetails: "",
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
@@ -79,7 +80,28 @@ const addItem = async (req) => {    // name, region, category, address, donID
             collector.items.push(item._id);
             await collector.save();
         }
-        return { status: 200, message: "Item Added!"};
+        return { status: 200, message: "Item Added!", id: item._id};
+    }
+    catch(err){
+        console.log(err);
+        return { status: 500, message: "Something went wrong!" };
+    }
+}
+
+const addImage = async (req) => {   // itemID, file
+    try{
+        console.log("upload...");
+        const response = await upload(req);
+        console.log("done");
+        console.log(req.body);
+        const id = new ObjectId(req.body.itemID);
+        const item = await items.findOne({ _id: id });
+        if(!item){
+            return { status: 404, message: 'Something went wrong!'};
+        }
+        item.url.push(response.fileLocation);
+        await item.save();
+        return { status: 200, message: 'Image Uploaded successfully'};
     }
     catch(err){
         console.log(err);
@@ -91,4 +113,5 @@ module.exports = {
     getItems,
     getItem,
     addItem,
+    addImage,
 }

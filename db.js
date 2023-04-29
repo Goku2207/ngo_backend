@@ -60,6 +60,7 @@ const itemSchema = {
     collectorName: String,
     collectorContact: String,
     charges: String,
+    mendingDetails: String,
 };
 
 const requestSchema = {     //added

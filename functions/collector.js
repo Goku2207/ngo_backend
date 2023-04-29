@@ -89,7 +89,8 @@ const collectItem = async (req) => {   //itemID, file
      }
 }
 
-const updateItem = async (req) =>{  //itemID, file, charges
+//TO ADD CHARGES AND UPLOAD PIC AFTER MENDING ITEM BY AGENT
+const updateItem = async (req) =>{  //itemID, file, charges, desc
     try{
         console.log(req.body);
         const id = new ObjectId(req.body.itemID);
@@ -103,6 +104,7 @@ const updateItem = async (req) =>{  //itemID, file, charges
         item.url.push(response.fileLocation);
         item.status = 'Mended';
         item.charges = req.body.charges;
+        item.mendingDetails = req.body.desc;
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
