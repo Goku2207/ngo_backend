@@ -50,6 +50,8 @@ const itemSchema = {
     category : String,
     name : String,
     url : [String],
+    beforeMendUrl : [String],
+    afterMendUrl : [String],
     status : String,
     region : String,
     address: String,

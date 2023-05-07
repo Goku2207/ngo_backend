@@ -68,6 +68,7 @@ const getAssignedItems = async (data) =>{ //collectorID
      }
 }
 
+//TO ADD IMAGE OF ITEM BY AGENT DURING PICKUP
 const collectItem = async (req) => {   //itemID, file
     try{
         console.log(req.body);
@@ -78,7 +79,7 @@ const collectItem = async (req) => {   //itemID, file
         const item = await items.findOne({_id: id});
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
-        item.url.push(response.fileLocation);
+        item.beforeMendUrl.push(response.fileLocation);
         item.status = 'Picked Up';
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
@@ -90,21 +91,25 @@ const collectItem = async (req) => {   //itemID, file
 }
 
 //TO ADD CHARGES AND UPLOAD PIC AFTER MENDING ITEM BY AGENT
-const updateItem = async (req) =>{  //itemID, file, charges, desc
+const updateItem = async (req) =>{  //itemID, file, charges, desc, onlyImg OR itemID, file, onlyImg
     try{
         console.log(req.body);
         const id = new ObjectId(req.body.itemID);
+        console.log("uploading...");
         const response = await upload(req);
+        console.log("Done...");
         if(response.fileLocation == "")
             return { status: 500, message: 'Internal Server Error' };
         const item = await items.findOne({_id: id});
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
         //console.log(response);
-        item.url.push(response.fileLocation);
-        item.status = 'Mended';
-        item.charges = req.body.charges;
-        item.mendingDetails = req.body.desc;
+        item.afterMenUrl.push(response.fileLocation);
+        if(req.body.onlyImg == 0){
+            item.status = 'Mended';
+            item.charges = req.body.charges;
+            item.mendingDetails = req.body.desc;
+        }
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }

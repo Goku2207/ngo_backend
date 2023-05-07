@@ -47,6 +47,8 @@ const addItem = async (req) => {    // name, region, category, address, donID
             category : req.body.category,
             name : req.body.name,
             url : [response.fileLocation],
+            beforeMendUrl : [],
+            afterMendUrl : [],
             status : 'Unassigned',   
             region : req.body.region,
             charges : 0,
