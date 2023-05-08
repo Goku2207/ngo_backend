@@ -104,7 +104,7 @@ const updateItem = async (req) =>{  //itemID, file, charges, desc, onlyImg OR it
         if(!item)
             return { status: 404, message: 'Something went wrong!'};
         //console.log(response);
-        item.afterMenUrl.push(response.fileLocation);
+        item.afterMendUrl.push(response.fileLocation);
         if(req.body.onlyImg == 0){
             item.status = 'Mended';
             item.charges = req.body.charges;
