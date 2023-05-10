@@ -81,6 +81,7 @@ const collectItem = async (req) => {   //itemID, file
             return { status: 404, message: 'Something went wrong!'};
         item.beforeMendUrl.push(response.fileLocation);
         item.status = 'Picked Up';
+        item.pickupDate = new Date().toDateString();
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
@@ -141,6 +142,7 @@ const deliverItem = async (data) => {   //itemID, name, aadhar, mobile, address
         acceptor.items.push(id);
         await acceptor.save();
         item.status = 'Delivered';
+        item.deliveredDate = new Date().toDateString();
         await item.save();
         return { status: 200, message: 'Item Delivered'};
      }

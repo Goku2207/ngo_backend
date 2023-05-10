@@ -19,10 +19,10 @@ const getItems = async (data) => {  //page, limit
     }
 }
 
-const getItem = async (data) => {   //_id
+const getItem = async (data) => {   //itemID
     try{
         console.log(data);
-        const id = new ObjectId(data);
+        const id = new ObjectId(data.itemID);
         const product = await items.findOne({ _id: id});
         if(!product){
             return {status: 404};
@@ -60,6 +60,9 @@ const addItem = async (req) => {    // name, region, category, address, donID
             collectorName: "",
             collectorContact: "",
             mendingDetails: "",
+            donatedDate: new Date().toDateString(),
+            pickupDate: null,
+            deliveredDate: null,
         })  
         //how should the collector change the iotem status, as that item should be updated with the new condition/status of item now       
         //so unique identification of item should be using mobile number and? as to what if same donor uploaded more than one items        
