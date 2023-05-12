@@ -1,6 +1,6 @@
 const {Items: items, Collectors: collectors, Acceptors: acceptors } = require("../db");
 const mongoose = require("mongoose");
-const { upload } = require("./helper");
+const { upload, todaysDate } = require("./helper");
 const ObjectId = mongoose.Types.ObjectId;
 
 const getCollectors = async (data) => {
@@ -81,7 +81,7 @@ const collectItem = async (req) => {   //itemID, file
             return { status: 404, message: 'Something went wrong!'};
         item.beforeMendUrl.push(response.fileLocation);
         item.status = 'Picked Up';
-        item.pickupDate = new Date().toDateString();
+        item.pickupDate = todaysDate();
         await item.save();
         return { status: 200, message: 'Item Status Updated'};
      }
@@ -142,7 +142,7 @@ const deliverItem = async (data) => {   //itemID, name, aadhar, mobile, address
         acceptor.items.push(id);
         await acceptor.save();
         item.status = 'Delivered';
-        item.deliveredDate = new Date().toDateString();
+        item.deliveredDate = todaysDate();
         await item.save();
         return { status: 200, message: 'Item Delivered'};
      }

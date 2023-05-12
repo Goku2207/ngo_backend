@@ -63,9 +63,9 @@ const itemSchema = {
     collectorContact: String,
     charges: String,
     mendingDetails: String,
-    donatedDate: Date,
-    pickupDate: Date,
-    deliveredDate: Date,
+    donatedDate: String,
+    pickupDate: String,
+    deliveredDate: String,
 };
 
 const requestSchema = {     //added

@@ -78,9 +78,19 @@ const findLeastAssignedCollector = async (regionToAssign) => {
     return new ObjectId(minCollectorArr[randomIndex]._id);
 }
 
+const todaysDate = () => {
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
+    today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}
+
 module.exports = {
     upload,
     del,
     autoAssign,
     findLeastAssignedCollector,
+    todaysDate,
 }

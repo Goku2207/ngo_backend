@@ -1,5 +1,5 @@
 const {Items: items, Donators: donators, Collectors: collectors } = require("../db");
-const { upload, findLeastAssignedCollector } = require('./helper'); 
+const { upload, findLeastAssignedCollector, todaysDate } = require('./helper'); 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -60,7 +60,7 @@ const addItem = async (req) => {    // name, region, category, address, donID
             collectorName: "",
             collectorContact: "",
             mendingDetails: "",
-            donatedDate: new Date().toDateString(),
+            donatedDate: todaysDate(),
             pickupDate: null,
             deliveredDate: null,
         })  
