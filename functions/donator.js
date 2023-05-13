@@ -42,7 +42,7 @@ const getTopThree = async () => {
     try{
         const topThree = await donators.aggregate([
             { $unwind:"$items" },
-            { $group : { _id:"$_id",  name: { "$first": "$name" }, address: {"$first": "$address"}, cnt:{ $sum:1 } } },
+            { $group : { _id:"$_id",  name: { "$first": "$name" }, email: {"$first": "$email"}, cnt:{ $sum:1 } } },
             { $sort :{ cnt: -1} },
             { $limit : 3 }
         ]);
